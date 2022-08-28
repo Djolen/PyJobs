@@ -1,8 +1,6 @@
 
 from datetime import datetime
 import os
-from pydoc import describe
-from traceback import print_tb
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -39,21 +37,15 @@ class Job(db.Model):
 
 
 #INDEX 
-@app.route("/") 
-def index(): 
+@app.route("/", methods=['GET','POST'], defaults={"page_num": 1}) 
+@app.route("/<int:page_num>", methods=['GET','POST']) 
+def index(page_num): 
     if 'tag' in request.args: 
         tag = request.args['tag']
         search = "%{}%".format(tag)
-        jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=10, page=1, error_out=True)
+        jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=1, page=1, error_out=True)
         return render_template('index.html', jobs = jobs)
-    jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=10, page=1, error_out=True)
-    return render_template('index.html', jobs = jobs)
-
-
-
-@app.route("/<int:page_num>") 
-def pagination(page_num): 
-    jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=10, page=page_num, error_out=True)
+    jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=1, page=page_num, error_out=True)
     return render_template('index.html', jobs = jobs)
 
 #CREATE
