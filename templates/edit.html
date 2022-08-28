@@ -9,10 +9,12 @@
     <form action="/jobs/update" method="POST" enctype="multipart/form-data" class="flex flex-col justify-start" autocomplete="off">
         {{form.hidden_tag()}}
         {{form.jobid(value=id, hidden = 'True')}}
+        {{form.company(class_='p-4 my-2', value = company )}}
         {{form.title(class_='p-4 my-2', value = title )}}
+        {{form.location(class_='p-4 my-2', value = location )}}
         {{form.description(class_='p-4 my-2', value = description)}}
-        {{form.email(class_='p-4 my-2', value = email )}}
-        {{form.phone(class_='p-4 my-2', value = phone)}}
+        {{form.website(class_='p-4 my-2', value = website )}}
+        {{form.email(class_='p-4 my-2', value = email)}}
         {{form.tags(class_='p-4 my-2', value = tags)}}
         {{form.file(class_='p-4 my-2')}}
         <img src="/static/logos/{{file}}" alt="" srcset="" class="h-[50px] w-[50px]">

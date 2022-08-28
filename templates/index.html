@@ -19,8 +19,9 @@
             <div class="flex flex-col justify-between">
                 <div class="flex flex-col mb-12">
                     <a href="/jobs/{{ job.id }}">
-                        <h1 class="text-2xl font-bold"> {{ job.title }}</h1> 
+                        <h1 class="text-2xl font-bold"> <span class="font-bold"> {{ job.company }}:  </span> {{ job.title }}</h1> 
                     </a>
+                    <p class="mb-1 text-sm">Location: {{ job.location }}</p> 
                     <p> {{job.description}} </p>
                 </div>
                 <div class="flex">

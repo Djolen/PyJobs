@@ -26,11 +26,21 @@ migrate = Migrate(app,db)
 class Job(db.Model): 
     id = db.Column(db.Integer, primary_key = True) 
     title = db.Column(db.String(50), nullable=False) 
+    company = db.Column(db.String(50), nullable=False) 
+    location = db.Column(db.String(50), nullable=False) 
     description = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique = True)
-    phone = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    website = db.Column(db.String(20), nullable=False)
     tags = db.Column(db.String(100), nullable=False)
     filename = db.Column(db.String(200))
+    creater_at = db.Column(db.DateTime, default=datetime.now)
+
+
+class User(db.Model): 
+    id = db.Column(db.Integer,  primary_key = True)
+    name  = db.Column(db.String(50), nullable=False) 
+    email = db.Column(db.String(50), nullable=False, unique = True)
+    password = db.Column(db.String(50), nullable=False) 
     creater_at = db.Column(db.DateTime, default=datetime.now)
 ##########################################################
 
@@ -43,9 +53,9 @@ def index(page_num):
     if 'tag' in request.args: 
         tag = request.args['tag']
         search = "%{}%".format(tag)
-        jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=1, page=1, error_out=True)
+        jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=10, page=1, error_out=True)
         return render_template('index.html', jobs = jobs)
-    jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=1, page=page_num, error_out=True)
+    jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=10, page=page_num, error_out=True)
     return render_template('index.html', jobs = jobs)
 
 #CREATE
@@ -61,13 +71,15 @@ def add():
     if form.validate_on_submit() and request.method == 'POST': 
         file = form.file.data # First grab the file
         title = form.title.data
-        email = form.email.data
+        company = form.company.data
+        location = form.location.data
+        website = form.website.data
         tags = form.tags.data
-        phone = form.phone.data
+        email = form.email.data
         description = form.description.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) 
         filename =  secure_filename(file.filename)
-        newJob = Job(title=title,description=description,email=email,phone=phone,tags=tags,filename=filename)
+        newJob = Job(title=title,description=description,website=website,company=company,location=location, email=email,tags=tags,filename=filename)
         db.session.add(newJob)
         db.session.commit()
 
@@ -93,13 +105,15 @@ def edit():
         id = request.form['id'] 
         job = Job.query.filter_by(id=id).first()
         title = job.title
+        company = job.company 
+        location =job.location
         description = job.description 
         email = job.email 
-        phone = job.phone
+        website = job.website
         tags = job.tags
         file = job.filename
         return render_template('edit.html', form = form, id=id, title= title, description = description,
-    email = email, phone = phone, tags = tags, file =file)
+    company=company,location=location, email = email, website = website, tags = tags, file =file)
 
 #UPDATE
 @app.route("/jobs/update", methods = ['GET','POST'])
@@ -108,11 +122,12 @@ def update():
     if form.validate_on_submit() and request.method == 'POST': 
         id = form.jobid.data
         job = Job.query.get(id)
-
+        company = form.company.data
+        location = form.location.data
         title = form.title.data
         email = form.email.data
         tags = form.tags.data
-        phone = form.phone.data
+        website = form.website.data
         description = form.description.data
         if form.file.data:
             file = form.file.data  
@@ -122,9 +137,11 @@ def update():
         
 
         job.title = title
+        job.company = company 
+        job.location = location 
         job.email = email
         job.tags = tags
-        job.phone = phone
+        job.website = website
         job.description = description
 
         db.session.commit()
@@ -138,6 +155,13 @@ def update():
 def show(id):
     job = Job.query.filter_by(id=id).first_or_404()
     return render_template("show.html", job=job)
+
+
+###########USER ROUYES
+@app.route("/user/register") 
+def createUser(): 
+    return render_template("user/register")
+
 
 
 @app.errorhandler(404)
