@@ -30,12 +30,35 @@
         <a href="/"  class="h-4/5  md:self-start">
             <img src="/static/images/logo.png" alt="" srcset="" class="h-full">
         </a>
+
+        
+        {% if  not current_user.is_authenticated %}
+
         <div class="hidden items-center justify-between min-h-full bg-white p-4  md:flex">
             <a class="mr-4" href="/user/login"> <i class="fa-solid fa-arrow-right-to-bracket"></i> <h1 class="text-md font-bold inline">Login</h1></a>
     
             <a href="/user/register"> <i class="fa-solid fa-user-plus"></i> <h1 class="text-md font-bold inline">Register</h1></a>
            
         </div>
+
+        {% else %} 
+
+        
+            <div class="flex  mx-2">
+                <a class="mx-2" href="{{url_for('profile')}}">
+                <i class="fa-solid fa-user"></i>
+                <h1 class="inline"> Profile Page</h1>
+                </a>
+
+                <a class="mx-2" href="{{url_for('logout')}}">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <h1 class="inline"> Logout</h1>
+                </a>
+            </div>
+
+
+        {% endif %}
+
     </div>  
    
     {% block content %}
