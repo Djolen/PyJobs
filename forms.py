@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FileField, validators, StringField, EmailField
+from wtforms import FileField, validators, StringField, EmailField, PasswordField 
 
 class CreateJobForm(FlaskForm):
     company= StringField("company", [validators.InputRequired()], render_kw={"placeholder": "Company"})
@@ -21,3 +21,13 @@ class EditJobForm(FlaskForm):
     website = StringField("website")
     tags = StringField("tags")
     file = FileField('file')
+
+class RegisterUserForm(FlaskForm): 
+    username = StringField('username', [validators.InputRequired()], render_kw={"placeholder": "Username"}) 
+    email = EmailField("email", [validators.InputRequired()], render_kw={"placeholder": "Email"}) 
+    password = PasswordField("password", [validators.InputRequired(), validators.EqualTo('confirm', message='Passwords must match')], render_kw={"placeholder": "Password"}) 
+    confirm = PasswordField("confirm", [validators.InputRequired()], render_kw={"placeholder": "Repeat password"}) 
+
+class LoginUserFormn(FlaskForm): 
+    email = EmailField("email", [validators.InputRequired()], render_kw={"placeholder": "Email"}) 
+    password = PasswordField("password", [validators.InputRequired()], render_kw={"placeholder": "Password"})

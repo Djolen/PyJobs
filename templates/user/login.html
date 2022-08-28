@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{%  block content  %} 
+
+{% include "partials/back_to_home.html" %}
+
+<div class="createForm flex flex-col items-start justify-center bg-blue-600 w-4/5 p-4 rounded mx-auto my-20 md:w-2/5">
+    <h1 class="text-white font-bold text-2xl mb-12 self-center uppercase"> Login </h1>
+    <form action="/user/login" method="POST"  class="flex flex-col justify-start" autocomplete="off">
+      
+        {{form.hidden_tag()}}
+        {{form.email(class_='p-4 my-2')}}
+        {{form.password(class_='p-4 my-2')}}
+
+        <a href="{{ url_for('register') }}"> <p class="text-[10px] mt-2 text-white hover:opacity-[90%]"> Don't have an account? Sing in now! </p> </a>
+
+        <button type="submit" class="bg-yellow-200 rounded p-4 hover:opacity-[95%] mt-8"> Login </button>
+    </form>
+</div>   
+
+{% endblock %}
