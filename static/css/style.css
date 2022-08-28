@@ -1,0 +1,92 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
+
+body{
+    box-sizing: border-box;
+    min-height: 100vh; 
+    margin: 0; 
+    padding: 0;
+    overflow: auto;
+}
+
+body,h1{
+    font-family: 'Fira Sans', sans-serif;
+}
+
+/* HERO SECTION */
+
+.heroSection{
+    overflow: hidden;
+}
+
+.heroSection img{
+    transform: rotate(-20deg);
+    opacity: 98%;
+} 
+
+/* END HERO SECTION */
+
+/* JOB CARDS SECTION */
+
+.jobCard{
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+
+/* SEARCH SECTION */
+
+.searchSection{
+    border: 2px solid grey;
+    border-radius: 4px;
+}
+
+.searchSection button{
+    transition: opacity 1s;
+}
+
+.searchSection input:focus{
+    outline: none;
+}
+
+
+
+.searchSection button:hover{
+    opacity: 90%; 
+    transition: opacity 1s;
+}
+
+/* CREATE FORM */
+.createForm form input{
+    background: none;
+    border-bottom: 2px solid black;
+    transition: 0.1s;
+}
+
+.createForm form input::placeholder{
+    color: yellow;
+    transition: 0.3s;
+}
+ 
+
+.createForm form input:focus{
+    outline: none;
+    border-bottom: 2px solid yellow;
+    transition: 0.3s;
+}
+
+.createForm form input:focus::placeholder{
+    transform: translateY(-15px);
+    opacity: 70%;
+    transition: 0.3s;
+}
+
+.createForm form input[type=file]{
+    border: none;
+}
+
+.createForm form .idEdit{
+    background-color: white;
+    border: none;
+    width: 20%;
+    text-align: center;
+}

@@ -1,0 +1,23 @@
+{% extends "layout.html" %} 
+
+{% block content %}
+
+{% include "partials/back_to_home.html" %}
+
+<div class="createForm flex flex-col items-start justify-center bg-blue-600 w-4/5 p-4 rounded mx-auto my-20 md:w-2/5">
+    <h1 class="text-white font-bold text-2xl mb-12 self-center uppercase"> Edit job </h1>
+    <form action="/jobs/update" method="POST" enctype="multipart/form-data" class="flex flex-col justify-start" autocomplete="off">
+        {{form.hidden_tag()}}
+        {{form.jobid(value=id, hidden = 'True')}}
+        {{form.title(class_='p-4 my-2', value = title )}}
+        {{form.description(class_='p-4 my-2', value = description)}}
+        {{form.email(class_='p-4 my-2', value = email )}}
+        {{form.phone(class_='p-4 my-2', value = phone)}}
+        {{form.tags(class_='p-4 my-2', value = tags)}}
+        {{form.file(class_='p-4 my-2')}}
+        <img src="/static/logos/{{file}}" alt="" srcset="" class="h-[50px] w-[50px]">
+        <button type="submit" class="bg-yellow-200 rounded p-4 hover:opacity-[95%] mt-8"> Edit Job </button>
+    </form>
+</div> 
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout.html"%}
+    
+{% block content %}
+
+    {% set tags = job.tags.split(",") %}
+
+    {% include "partials/back_to_home.html" %}
+
+    <div class="flex flex-col items-center justify-center bg-blue-600 w-4/5 p-4 rounded mx-auto my-20 md:w-2/5">
+        <img src="/static/logos/{{job.filename}}" class="mb-4" alt=""> 
+        <h1 class="text-white mb-4"> Title: {{ job.title }} </h1> 
+        <p class="text-white text-sm mb-12 self-start"> Description: {{ job.description }} </p>
+        <p class="self-start text-white"> Contact email: {{ job.email }}</p>
+        <p class="self-start text-white mb-8"> Contact phone: {{ job.phone }}</p>
+
+
+        <div class="flex self-start mb-8">
+            {% for tag in tags %}
+            <div class="bg-yellow-300 rounded p-2 mx-1">
+                <h1 class="text-md text-white font bold"> {{ tag }} </h1>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="h-[1px] w-full bg-black mb-4" ></div>
+
+        <div class="self-start mb-6 flex">
+            <form action="/jobs/delete" method="POST">
+                <input type="text"  name="id" id="" hidden value="{{ job.id }}">
+                <button type="Submit" class="bg-yellow-400 text-white p-4 hover:opacity-[90%] mx-2"> Delete Job </button>
+            </form>
+
+            <form action="/jobs/edit" method="POST">
+                <input type="text"  name="id" id="" hidden value="{{ job.id }}">
+                <button type="Submit" class="bg-yellow-400 text-white p-4 hover:opacity-[90%] mx-2"> Edit Job </button>
+            </form>
+        </div>
+    </div> 
+
+
+{% endblock %}
+

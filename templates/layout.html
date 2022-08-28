@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyJobs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show"
+                class="fixed top-0 left-0 w-full h-[10vh] bg-blue-300 flex items-center justify-center z-50 opacity-90">
+            {% for message in messages %}
+                <h1 class="text-white font-bold text-lg">{{ message }}</h1>
+            {% endfor %}
+            </div>
+
+        {% endif %}
+    {% endwith %}
+
+    <!-- HEADER -->
+
+    <div class="flex  justify-center items-center w-full h-[20vh]  bg-white   md:justify-between">
+        <a href="/"  class="h-4/5  md:self-start">
+            <img src="/static/images/logo.png" alt="" srcset="" class="h-full">
+        </a>
+        <div class="hidden items-center justify-between min-h-full bg-white p-4  md:flex">
+            <a class="mr-4" href=""> <i class="fa-solid fa-arrow-right-to-bracket"></i> <h1 class="text-md font-bold inline">Login</h1></a>
+    
+            <a href=""> <i class="fa-solid fa-user-plus"></i> <h1 class="text-md font-bold inline">Register</h1></a>
+           
+        </div>
+    </div>  
+   
+    {% block content %}
+
+    <!-- MAIN CONTENT -->
+
+    {% endblock %}
+
+    <!-- Footer -->
+
+    <div class="fixed bottom-0 left-0 w-full h-[10vh] bg-blue-700 flex items-center justify-center opacity-90">
+        <h1 class="font-bold text-md text-white">
+            2022 &copy; All Rights Reserved
+        </h1>
+
+        <button class="bg-yellow-200 text-white font-bold p-4 absolute right-10 hover:bg-yellow-300">
+            <a href="/jobs/create" class="w-full h-full">
+                Post Job
+            </a>
+        </button>
+    </div>
+   
+</body>
+</html>
