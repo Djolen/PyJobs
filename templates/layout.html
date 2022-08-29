@@ -49,7 +49,7 @@
         {% else %} 
 
         
-            <div class="flex  mx-2">
+            <div class="hidden  mx-2 md:flex">
                 <a class="mx-2 hover:text-blue-800" href="{{url_for('profile')}}">
                 <i class="fa-solid fa-user"></i>
                 <h1 class="inline"> Profile Page</h1>
@@ -79,7 +79,7 @@
             2022 &copy; All Rights Reserved
         </h1>
 
-        <button class="bg-yellow-200 text-white font-bold p-4 absolute right-10 hover:bg-yellow-300">
+        <button class="bg-yellow-200 text-white font-bold p-4 absolute right-10 hidden md:flex hover:bg-yellow-300">
             <a href="/jobs/create" class="w-full h-full">
                 Post Job
             </a>

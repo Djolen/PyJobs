@@ -1,9 +1,11 @@
 
 from datetime import datetime
+from operator import or_
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from werkzeug.utils import secure_filename
 from flask_bcrypt import Bcrypt
 from forms import CreateJobForm, EditJobForm, RegisterUserForm, LoginUserFormn
@@ -75,6 +77,11 @@ def index(page_num):
         search = "%{}%".format(tag)
         jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=10, page=1, error_out=True)
         return render_template('index.html', jobs = jobs)
+    if 'search' in request.args: 
+        search = request.args['search']
+        search = "%{}%".format(search)
+        jobs = Job.query.filter(or_(Job.title.like(search) , Job.company.like(search), Job.tags.like(search))).paginate(per_page=10, page=1, error_out=True)
+        return render_template('index.html', jobs = jobs)
     jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=10, page=page_num, error_out=True)
     return render_template('index.html', jobs = jobs)
 
@@ -101,7 +108,7 @@ def add():
         description = form.description.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) 
         filename =  secure_filename(file.filename)
-        newJob = Job(title=title,description=description,website=website,company=company,location=location, email=email,tags=tags,filename=filename)
+        newJob = Job(title=title,description=description,website=website,company=company,location=location, email=email,tags=tags,filename=filename, user_id = current_user.id)
         db.session.add(newJob)
         db.session.commit()
 
@@ -114,6 +121,9 @@ def delete():
     if request.method == "POST": 
         id = request.form['id'] 
         job = Job.query.filter_by(id=id).first()
+        if current_user.id != job.user_id:
+            flash('Acces denied') 
+            return redirect(url_for('index'))
         db.session.delete(job)
         db.session.commit()
 
@@ -160,6 +170,9 @@ def update():
             filename =  secure_filename(file.filename)
             job.filename = filename
         
+        if current_user.id != job.user_id:
+            flash('Acces denied') 
+            return redirect(url_for('index'))
 
         job.title = title
         job.company = company 
@@ -205,7 +218,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-
+        flash('Account succesfully created! Please login.')
         return redirect(url_for('index'))
     else: 
         flash("Password didn't match") 

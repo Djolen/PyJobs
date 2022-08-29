@@ -13,9 +13,10 @@
     <!-- JOB SECTION -->
     <div class="flex flex-col p-4 mb-20">
         <!-- job card -->
+        {% if jobs %}
         {% for job in jobs %}
         {% set tags = job.tags.split(',') %}    
-        <div class="flex w-full h-[40vh] border-solid border-2 p-2 border-indigo-600 rounded mb-4 bg-gray-100 jobCard">
+        <div class="flex w-full h-[45vh] border-solid border-2 p-2 border-indigo-600 rounded mb-4 bg-gray-100 jobCard">
             <img class="w-1/4 h-full mr-12 hidden md:flex" src="/static/logos/{{job.filename}}" alt="" srcset="" >
             <div class="flex flex-col justify-between">
                 <div class="flex flex-col mb-12">
@@ -34,10 +35,37 @@
                     </a>
                     {% endfor %}
                 </div>
+
+                <div class="h-[2px] w-[30vw] bg-black my-1" ></div>
+                
+                <div class="self-start flex">
+                    <form action="/jobs/delete" method="POST">
+                        <input type="text"  name="id" id="" hidden value="{{ job.id }}">
+                        <button type="Submit" class="bg-yellow-400 text-white mr-2 p-1 rounded hover:opacity-[90%]"> 
+                            <i class="fa-solid fa-trash-can"></i> 
+                            Delete Job 
+                        </button>
+                    </form>
+        
+                    <form action="/jobs/edit" method="POST">
+                        <input type="text"  name="id" id="" hidden value="{{ job.id }}">
+                        <button type="Submit" class="bg-yellow-400 text-white mr-2 p-1 rounded hover:opacity-[90%]"> 
+                            <i class="fa-solid fa-pen"></i>
+                            Edit Job 
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
         {% endfor %}
 
+        {% else %}
+
+            <h1 class="font-bold text-lg text-blue-800 hover:text-blue-500"> <a href="/jobs/create"> Looks like you don't have any jobs added yet. Click here to add new job! </a> </h1>
+
+        {% endif %}
+        
     </div>
 
 {% endblock %}
