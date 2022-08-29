@@ -52,6 +52,7 @@ class Job(db.Model):
     tags = db.Column(db.String(100), nullable=False)
     filename = db.Column(db.String(200))
     creater_at = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
 
 
 class User(UserMixin, db.Model): 
@@ -60,6 +61,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), nullable=False, unique = True)
     password = db.Column(db.String(100), nullable=False) 
     creater_at = db.Column(db.DateTime, default=datetime.now)
+    jobs = db.relationship('Job', backref = 'user')
 ##########################################################
 
 
@@ -78,12 +80,14 @@ def index(page_num):
 
 #CREATE
 @app.route("/jobs/create")
+@login_required
 def create():
     form = CreateJobForm()
     return render_template("create.html", form = form)
 
 #ADD
 @app.route("/jobs/add", methods = ['POST','GET']) 
+@login_required
 def add():
     form = CreateJobForm()
     if form.validate_on_submit() and request.method == 'POST': 
@@ -105,6 +109,7 @@ def add():
     
 #DELETE
 @app.route("/jobs/delete", methods = ['GET','POST'])
+@login_required
 def delete(): 
     if request.method == "POST": 
         id = request.form['id'] 
@@ -117,6 +122,7 @@ def delete():
 
 #EDIT
 @app.route("/jobs/edit", methods = ['GET','POST'])
+@login_required
 def edit(): 
     form = EditJobForm()
     if request.method == "POST": 
@@ -135,6 +141,7 @@ def edit():
 
 #UPDATE
 @app.route("/jobs/update", methods = ['GET','POST'])
+@login_required
 def update(): 
     form = EditJobForm()
     if form.validate_on_submit() and request.method == 'POST': 
@@ -217,17 +224,17 @@ def loginPOST():
         password = form.password.data
         user = User.query.filter_by(email = email).first()
         if not user: 
-            flash("User does not exist.") 
+            flash("User you have entered is invalid, please try again!") 
             return redirect(url_for('login'))
         if bcrypt.check_password_hash(user.password, password) is False: 
-            flash("Wrong password, please try again!") 
+            flash("Password you have entered is invalid, please try again!") 
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('profile'))
-    flash("Wrong email or password, please try again!") 
-    return redirect(url_for('login'))
+
 
 @app.route('/user/logout')
+@login_required
 def logout():
     logout_user() 
     flash('Logged out')
@@ -237,8 +244,9 @@ def logout():
 @app.route('/user/profile')
 @login_required
 def profile(): 
+    jobs = Job.query.filter_by(user_id = current_user.id).all()
     name = current_user.name
-    return render_template('user/profile.html', name= name)
+    return render_template('user/profile.html', name= name, jobs = jobs)
 
 
 @app.errorhandler(404)
