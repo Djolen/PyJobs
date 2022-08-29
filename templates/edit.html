@@ -9,16 +9,23 @@
     <form action="/jobs/update" method="POST" enctype="multipart/form-data" class="flex flex-col justify-start" autocomplete="off">
         {{form.hidden_tag()}}
         {{form.jobid(value=id, hidden = 'True')}}
-        {{form.company(class_='p-4 my-2', value = company )}}
-        {{form.title(class_='p-4 my-2', value = title )}}
-        {{form.location(class_='p-4 my-2', value = location )}}
-        {{form.description(class_='p-4 my-2', value = description)}}
-        {{form.website(class_='p-4 my-2', value = website )}}
-        {{form.email(class_='p-4 my-2', value = email)}}
-        {{form.tags(class_='p-4 my-2', value = tags)}}
+        <h1 class="text-sm text-white"> Company name: </h1>
+        {{form.company(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = company )}}
+        <h1 class="text-sm text-white"> Job title: </h1>
+        {{form.title(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = title )}}
+        <h1 class="text-sm text-white"> Location: </h1>
+        {{form.location(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = location )}}
+        <h1 class="text-sm text-white"> Description: </h1>
+        {{form.description(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = description)}}
+        <h1 class="text-sm text-white"> Website: </h1>
+        {{form.website(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = website )}}
+        <h1 class="text-sm text-white"> Email: </h1>
+        {{form.email(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = email)}}
+        <h1 class="text-sm text-white"> Tags: </h1>
+        {{form.tags(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = tags)}}
         {{form.file(class_='p-4 my-2')}}
         <img src="/static/logos/{{file}}" alt="" srcset="" class="h-[50px] w-[50px]">
-        <button type="submit" class="bg-yellow-200 rounded p-4 hover:opacity-[95%] mt-8"> Edit Job </button>
+        <button type="submit" class="bg-yellow-200 rounded p-4 w-[70vw] hover:opacity-[95%] mt-8 md:w-[35vw]"> Edit Job </button>
     </form>
 </div> 
 
