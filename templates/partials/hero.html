@@ -3,10 +3,10 @@
 <div class="bg-blue-700 h-[280px] flex items-center justify-center heroSection">
     <img src="/static/images/python-logo.png"  class="max-h-[120%]" alt="" srcset="">
     <h1 class="text-6xl font-bold uppercase text-white absolute"> <span class="text-yellow-200"> Py </span> Jobs</h1>
-    <h1 class="self-end absolute mb-12 font-bold text-white  border-solid border-2 p-2 border-white rounded hidden md:flex" > 
-       <a href="{{url_for('login')}}" class="hover:opacity-90">
+    {% if not current_user.is_authenticated %}
+    <a href="{{url_for('login')}}" class="self-end absolute mb-12 font-bold text-white  border-solid border-2 p-2 border-white rounded hidden md:flex hover:opacity-90" > 
         Login to post job
-       </a>  
-    </h1>
+    </a>
+    {% endif %}
 </div> 
 
