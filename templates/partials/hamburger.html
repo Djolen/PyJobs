@@ -1,6 +1,8 @@
 <div class="hidden flex-col fixed top-0 left-0 h-[50vh] w-full bg-blue-600 opacity-90 p-8 z-50 " id="hamburgerMenu">
+
+    <i class="text-2xl fa-solid fa-xmark mb-4" id="closeHamburger"></i>
+
     {% if  not current_user.is_authenticated %}
-        <i class="text-4xl fa-solid fa-xmark " id="closeHamburger"></i>
 
         <a class="my-2 hover:text-blue-800" href="/user/login"> <i class="fa-solid fa-arrow-right-to-bracket"></i> 
             <h1 class="text-2xl font-bold inline">Login</h1>
@@ -14,18 +16,21 @@
 
     {% else %} 
 
-    
-        <div class="hidden  mx-2 md:flex">
-            <a class="mx-2 hover:text-blue-800" href="{{url_for('profile')}}">
+            <a class="mx-2 mb-4 hover:text-blue-800" href="{{url_for('profile')}}">
             <i class="fa-solid fa-user"></i>
             <h1 class="inline"> Profile Page</h1>
             </a>
 
-            <a class="mx-2 hover:text-blue-800" href="{{url_for('logout')}}">
+            <a class="mx-2 mb-4 hover:text-blue-800" href="{{url_for('manage')}}">
+                <i class="fa-solid fa-gear"></i>
+                <h1 class="inline"> Manage profile</h1>
+            </a>
+
+            <a class="mx-2 mb-4 hover:text-blue-800" href="{{url_for('logout')}}">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <h1 class="inline"> Logout</h1>
             </a>
-        </div>
+
 
 
     {% endif %}
