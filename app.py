@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from werkzeug.utils import secure_filename
 from flask_bcrypt import Bcrypt
-from forms import CreateJobForm, EditJobForm, RegisterUserForm, LoginUserFormn
+from forms import CreateJobForm, EditJobForm, RegisterUserForm, LoginUserFormn, EditUserForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 app = Flask(__name__) 
@@ -260,6 +260,35 @@ def profile():
     jobs = Job.query.filter_by(user_id = current_user.id).all()
     name = current_user.name
     return render_template('user/profile.html', name= name, jobs = jobs)
+
+@app.route('/user/manage') 
+@login_required 
+def manage(): 
+    form = EditUserForm() 
+    return render_template('user/manage.html', form = form)
+
+@app.route('/user/manage', methods = ['POST']) 
+@login_required 
+def manageUpdate(): 
+    form = EditUserForm() 
+    if form.validate_on_submit and request.method == 'POST':
+        userid = form.userid.data
+        user = User.query.filter_by(id =userid).first() 
+        oldpassword = form.oldpassword.data 
+        if bcrypt.check_password_hash(user.password, oldpassword) is False: 
+            flash("Password you have entered is invalid, please try again!") 
+            return redirect(url_for('manage')) 
+        if form.username.data != '': 
+            user.name = form.username.data
+        if form.email.data != '': 
+            user.email = form.email.data
+        if form.password.data != '':
+            user.password = bcrypt.generate_password_hash(form.password.data) 
+            
+        db.session.commit()
+        flash('Successfully edited profile')
+        
+        return redirect(url_for('profile'))
 
 
 @app.errorhandler(404)

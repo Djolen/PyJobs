@@ -31,3 +31,10 @@ class RegisterUserForm(FlaskForm):
 class LoginUserFormn(FlaskForm): 
     email = EmailField("email", [validators.InputRequired()], render_kw={"placeholder": "Email"}) 
     password = PasswordField("password", [validators.InputRequired()], render_kw={"placeholder": "Password"})
+
+class EditUserForm(FlaskForm): 
+    userid = StringField('userid')
+    username = StringField("username")
+    email = EmailField("email")
+    password= PasswordField("password")
+    oldpassword= PasswordField("oldpassword", [validators.input_required()])
