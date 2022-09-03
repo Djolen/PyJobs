@@ -25,6 +25,7 @@ class EditJobForm(FlaskForm):
 class RegisterUserForm(FlaskForm): 
     username = StringField('username', [validators.InputRequired()], render_kw={"placeholder": "Username"}) 
     email = EmailField("email", [validators.InputRequired()], render_kw={"placeholder": "Email"}) 
+    profile_picture = FileField('profile_picture',[validators.InputRequired()])
     password = PasswordField("password", [validators.InputRequired(), validators.EqualTo('confirm', message='Passwords must match')], render_kw={"placeholder": "Password"}) 
     confirm = PasswordField("confirm", [validators.InputRequired()], render_kw={"placeholder": "Repeat password"}) 
 
@@ -36,5 +37,6 @@ class EditUserForm(FlaskForm):
     userid = StringField('userid')
     username = StringField("username")
     email = EmailField("email")
+    profile_picture = FileField('profile_picture')
     password= PasswordField("password")
     oldpassword= PasswordField("oldpassword", [validators.input_required()])

@@ -16,6 +16,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['UPLOAD_FOLDER'] = 'static/logos'
+app.config['UPLOAD_FOLDER_PROFILE'] = 'static/profilePics'
 
 app.config['SQLALCHEMY_DATABASE_URI'] ='mysql://root:@localhost/pyjobs'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -63,6 +64,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), nullable=False, unique = True)
     password = db.Column(db.String(100), nullable=False) 
     creater_at = db.Column(db.DateTime, default=datetime.now)
+    profile_picture = db.Column(db.String(200))
     jobs = db.relationship('Job', backref = 'user')
 ##########################################################
 
@@ -98,7 +100,7 @@ def create():
 def add():
     form = CreateJobForm()
     if form.validate_on_submit() and request.method == 'POST': 
-        file = form.file.data # First grab the file
+        file = form.file.data 
         title = form.title.data
         company = form.company.data
         location = form.location.data
@@ -112,6 +114,7 @@ def add():
         db.session.add(newJob)
         db.session.commit()
 
+        flash('Succesfully added job')
         return redirect(url_for('index'))
     
 #DELETE
@@ -192,10 +195,11 @@ def update():
 @app.route("/jobs/<id>")
 def show(id):
     job = Job.query.filter_by(id=id).first_or_404()
+    print(job.user.id)
     return render_template("show.html", job=job)
 
 
-###########USER ROUYES
+###########USER ROUTES
 @app.route("/user/register") 
 def createUser(): 
     form = RegisterUserForm() 
@@ -214,7 +218,11 @@ def register():
             flash("Email already exists") 
             return redirect(url_for('register'))
 
-        new_user = User(name = username, email = email, password = bcrypt.generate_password_hash(password))
+        file = form.profile_picture.data  
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER_PROFILE'],secure_filename(file.filename))) 
+        filename =  secure_filename(file.filename)
+        
+        new_user = User(name = username, email = email, password = bcrypt.generate_password_hash(password), profile_picture = filename)
         db.session.add(new_user)
         db.session.commit()
 
@@ -259,7 +267,8 @@ def logout():
 def profile(): 
     jobs = Job.query.filter_by(user_id = current_user.id).all()
     name = current_user.name
-    return render_template('user/profile.html', name= name, jobs = jobs)
+    profile_picture = current_user.profile_picture
+    return render_template('user/profile.html', name= name, jobs = jobs, profile_picture = profile_picture)
 
 @app.route('/user/manage') 
 @login_required 
@@ -278,6 +287,11 @@ def manageUpdate():
         if bcrypt.check_password_hash(user.password, oldpassword) is False: 
             flash("Password you have entered is invalid, please try again!") 
             return redirect(url_for('manage')) 
+        if form.profile_picture.data:
+            file = form.profile_picture.data  
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER_PROFILE'],secure_filename(file.filename))) 
+            filename =  secure_filename(file.filename)
+            user.profile_picture = filename
         if form.username.data != '': 
             user.name = form.username.data
         if form.email.data != '': 

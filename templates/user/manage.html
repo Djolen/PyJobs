@@ -11,11 +11,13 @@
         {{form.username(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = current_user.name )}}
         <h1 class="text-sm text-white"> Email: </h1>
         {{form.email(class_='p-4 my-2 w-[70vw] md:w-[35vw]', value = current_user.email )}}
+        <h1 class="text-sm text-white"> Profile picture: </h1>
+        {{form.profile_picture(class_='p-4 my-2 w-[70vw] md:w-[35vw]' )}}
         <h1 class="text-sm text-white"> New password: </h1>
         {{form.password(class_='p-4 my-2 w-[70vw] md:w-[35vw]' )}}
         <h1 class="text-sm text-white"> Please enter old password in order to edit your profile: </h1>
         {{form.oldpassword(class_='p-4 my-2 w-[70vw] md:w-[35vw]')}}
-        <button type="submit" class="bg-yellow-200 rounded p-4 w-[70vw] hover:opacity-[95%] mt-8 md:w-[35vw]"> Edit Job </button>
+        <button type="submit" class="bg-yellow-200 rounded p-4 w-[70vw] hover:opacity-[95%] mt-8 md:w-[35vw]"> Edit profile </button>
     </form>
 </div> 
 

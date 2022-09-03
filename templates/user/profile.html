@@ -5,7 +5,13 @@
 
 {% include "partials/back_to_home.html" %}
 
-    <h1 class="mx-4"> Welcome:  <span class="font-bold text-lg"> {{ name }} </span></h1>
+    <div class="flex items-center">
+
+        <h1 class="mx-4"> Welcome:  <span class="font-bold text-lg"> {{ name }} </span></h1>
+
+        <img src="/static/profilePics/{{profile_picture}}" class="w-[50px] h-[50px] rounded-full" alt="">
+
+    </div>
 
 
     <h1 class="mx-4 text-blue-800 text-lg font-bold"> My Jobs: </h1>
