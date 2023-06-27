@@ -76,12 +76,14 @@ class User(UserMixin, db.Model):
 def index(page_num): 
     if 'tag' in request.args: 
         tag = request.args['tag']
+        tag = tag.strip()
         search = "%{}%".format(tag)
         jobs = Job.query.filter(Job.tags.like(search)).paginate(per_page=10, page=1, error_out=True)
         return render_template('index.html', jobs = jobs)
     if 'search' in request.args: 
         search = request.args['search']
         search = "%{}%".format(search)
+        search = search.strip()
         jobs = Job.query.filter(or_(Job.title.like(search) , Job.company.like(search), Job.tags.like(search))).paginate(per_page=10, page=1, error_out=True)
         return render_template('index.html', jobs = jobs)
     jobs = Job.query.order_by(Job.creater_at.desc()).paginate(per_page=10, page=page_num, error_out=True)
